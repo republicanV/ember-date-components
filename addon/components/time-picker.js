@@ -1,8 +1,8 @@
 import Ember from 'ember';
 import layout from '../templates/components/time-picker';
-import moment from 'moment';
+// import moment from 'moment';
 import computed from 'ember-computed';
-import parseTime from 'ember-date-components/utils/parse-time';
+// import parseTime from 'ember-date-components/utils/parse-time';
 import buildTimeRange from 'ember-date-components/utils/build-time-range';
 
 const {
@@ -29,6 +29,8 @@ export default Component.extend({
   classNames: ['time-picker__wrapper'],
   classNameBindings: ['isOpen:time-picker__wrapper--open'],
 
+  moment: Ember.inject.service(),
+  
   /**
    * The current value of the time picker.
    * Has to be a moment.js object or null.
@@ -59,7 +61,7 @@ export default Component.extend({
    * @public
    */
   amPm: computed(function() {
-    return moment().startOf('day').format('LLL').toLowerCase().indexOf('am') > -1;
+    return this.get('moment').moment().startOf('day').format('LLL').toLowerCase().indexOf('am') > -1;
   }),
 
   /**
@@ -175,8 +177,8 @@ export default Component.extend({
       amPm,
       step,
       selectStep,
-      minTime: parseTime(minTime),
-      maxTime: parseTime(maxTime)
+      minTime: this.parseTime(minTime),
+      maxTime: this.parseTime(maxTime)
     };
   }),
 
@@ -339,7 +341,7 @@ export default Component.extend({
    */
   _checkInput() {
     let value = (get(this, 'stringValue') || '').toLowerCase();
-    let newValue = parseTime(value);
+    let newValue = this.parseTime(value);
     this._checkNewValue(newValue);
   },
 
@@ -351,7 +353,7 @@ export default Component.extend({
    */
   _checkStringInput() {
     let inputValue = get(this, 'inputValue');
-    let newValue = parseTime(inputValue);
+    let newValue = this.parseTime(inputValue);
 
     if (!newValue) {
       set(this, 'stringValue', null);
@@ -387,12 +389,12 @@ export default Component.extend({
 
     // if time is before minTime, return minTime
     if (!isNone(min) && val < min) {
-      return moment(min);
+      return this.get('moment').moment(min);
     }
 
     // if time is after maxTime, return maxTime
     if (!isNone(max) && val > max) {
-      return moment(max);
+      return this.get('moment').moment(max);
     }
 
     // if time is not in step range, round it up/down
@@ -401,9 +403,9 @@ export default Component.extend({
     if (diff !== 0) {
       // If diff > 50%, round up, elese round down
       if (diff * 2 > stepMs) {
-        return moment(val + stepMs - diff);
+        return this.get('moment').moment(val + stepMs - diff);
       } else {
-        return moment(val - diff);
+        return this.get('moment').moment(val - diff);
       }
     }
 
@@ -439,7 +441,7 @@ export default Component.extend({
     let value = get(this, '_value');
     let format = get(this, 'format');
 
-    value = parseTime(value);
+    value = this.parseTime(value);
     value = (getTypeOf(value) === 'instance') ? value.format(format) : value;
     set(this, 'stringValue', value || null);
   },
@@ -544,5 +546,120 @@ export default Component.extend({
       this._open();
       set(this, 'inputValue', val);
     }
+  },
+
+  /**
+   * Parse a time from a string.
+   *
+   * This will parse a string and return a moment.js object.
+   * Value can also be a moment.js object.
+   *
+   * It can detect the following input formats:
+   *
+   * 7
+   * 14
+   * 7,5
+   * 7.5
+   * 14,15
+   * 14.15
+   * 7:30
+   * 14:30
+   * 7am
+   * 7pm
+   * 12am
+   * 12pm
+   * 7:30
+   * 07:30
+   * 14:2
+   * 12:40 am
+   * 08:10 pm
+   *
+   * It will max out at 23:59.
+   *
+   * @namespace EmberDateComponents.Utils
+   * @method parseTime
+   * @param {String|Object} value
+   * @return {Object}
+   * @public
+   */
+  parseTime(value) {
+    if (!value) {
+      return null;
+    }
+
+    // Moment.js objects are handled directly.
+    if (typeof value === 'object' && typeof value.format === 'function') {
+      return value;
+    }
+
+    // Always convert to a string for parsing
+    value = `${value}`;
+
+    // Try to be smart and detect the used format
+    let usesAmPm = value.indexOf('am') > -1 || value.indexOf('pm') > -1;
+    let hourIsTwoDigit = /^\d\d$/.test(value.substr(0, 2));
+    let minuteSeparator = ':';
+    if (value.indexOf(',') > -1) {
+      minuteSeparator = ',';
+    }
+    if (value.indexOf('.') > -1) {
+      minuteSeparator = '.';
+    }
+    let usesMinutes = value.indexOf(minuteSeparator) > -1;
+
+    let hours = 0;
+    let minutes = 0;
+    let amPm = null;
+
+    // Hours
+    if (hourIsTwoDigit) {
+      hours = value.substr(0, 2) * 1;
+    } else {
+      hours = (value[0] || 0) * 1;
+    }
+
+    // Minutes
+    if (usesMinutes) {
+      let minutePosition = value.indexOf(minuteSeparator) + 1;
+      let tmp = value.substr(minutePosition, 2);
+      let minuteIsTwoDigit = /^\d\d$/.test(tmp);
+
+      if (minuteIsTwoDigit) {
+        minutes = tmp * 1;
+      } else {
+        minutes = (value[minutePosition] || 0) * 1;
+      }
+
+      // Convert e.g. 7,5 --> 7:30
+      if (minuteSeparator !== ':') {
+        minutes = minutes * 60 * (minuteIsTwoDigit ? 0.01 : 0.1);
+      }
+    }
+
+    // am/pm ?
+    if (usesAmPm) {
+      amPm = value.indexOf('am') > -1 ? 'am' : 'pm';
+      if (amPm === 'am' && hours === 12) {
+        hours = 0;
+      } else if (amPm === 'pm' && hours === 12) {
+        hours = 12;
+      } else if (amPm === 'pm') {
+        hours += 12;
+      }
+
+    }
+
+    // Minutes cannot be greater than 59
+    if (minutes > 59) {
+      minutes = 59;
+    }
+
+    // Hours cannot be greater than 23
+    if (hours > 23) {
+      hours = 23;
+      minutes = 59;
+    }
+
+    return this.get('moment').moment(0).hour(hours).minutes(minutes).seconds(0).milliseconds(0);
   }
 });

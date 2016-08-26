@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/date-picker-month';
-import moment from 'moment';
+// import moment from 'moment';
 import computed from 'ember-computed';
 
 const {
@@ -24,6 +24,8 @@ const {
 export default Component.extend({
   layout,
   classNames: ['date-picker__calendar__outer'],
+
+  moment: Ember.inject.service(),
 
   // ATTRIBUTES BEGIN ----------------------------------------
 
@@ -123,7 +125,7 @@ export default Component.extend({
    */
   currentMonth: computed('month', function() {
     let date = get(this, 'month');
-    return date ? date.clone().startOf('month') : moment().startOf('month');
+    return date ? date.clone().startOf('month') : this.get('moment').moment().startOf('month');
   }),
 
   /**
@@ -158,10 +160,15 @@ export default Component.extend({
     let days = array();
 
     // start with days from previous month to fill up first week
-    let firstWeekday = currentMonth.isoWeekday();
-    for (let i = firstWeekday; i > 1; i--) {
+    let startDayOfFirstWeek = currentMonth.clone().startOf('month').startOf('week');
+    let daysCountToPrepend = currentMonth.diff(startDayOfFirstWeek, 'day');
+    for (let i = 0; i < daysCountToPrepend; i++) {
       days.push(null);
     }
+    // let firstWeekday = currentMonth.isoWeekday();
+    // for (let i = firstWeekday; i > 1; i--) {
+    //   days.push(null);
+    // }
 
     // create one day object for every day in the month
     for (let i = 0; i < daysInMonth; i++) {
@@ -172,17 +179,22 @@ export default Component.extend({
         year: day.year(),
         month: day.month(),
         day: day.date(),
-        weekday: day.isoWeekday()
+        weekday: day.weekday()
       };
 
       days.push(dayObject);
     }
 
     // end with days from next month to fill up last week
-    let lastWeekday = currentMonth.clone().endOf('month').isoWeekday();
-    for (let i = 1; i <= 7 - lastWeekday; i++) {
+    let daysAddedCount = daysCountToPrepend + daysInMonth;
+    let daysCountToAppend = Math.ceil(daysAddedCount/7)*7 - daysAddedCount;
+    for (let i = 0; i < daysCountToAppend; i++) {
       days.push(null);
     }
+    // let lastWeekday = currentMonth.clone().endOf('month').isoWeekday();
+    // for (let i = 1; i <= 7 - lastWeekday; i++) {
+    //   days.push(null);
+    // }
 
     return days;
   }),
@@ -220,8 +232,8 @@ export default Component.extend({
    * @private
    */
   weekdays: computed(function() {
-    let weekdays = moment.weekdaysMin();
-    weekdays.push(weekdays.shift());
+    let weekdays = this.get('moment').getInstance().weekdaysMin(true);
+    // weekdays.push(weekdays.shift());
     return weekdays;
   }),
 
@@ -234,7 +246,7 @@ export default Component.extend({
    * @private
    */
   today: computed(function() {
-    return moment().startOf('day');
+    return this.get('moment').moment().startOf('day');
   }),
 
   // PROPERTIES END ----------------------------------------

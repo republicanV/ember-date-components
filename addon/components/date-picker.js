@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/date-picker';
-import moment from 'moment';
+// import moment from 'moment';
 import computed from 'ember-computed';
 import $ from 'jquery';
 
@@ -27,6 +27,8 @@ export default Component.extend({
 
   classNames: ['date-picker__wrapper'],
   classNameBindings: ['isOpen:date-picker__wrapper--open'],
+
+  moment: Ember.inject.service(),
 
   // ATTRIBUTES BEGIN ----------------------------------------
 
@@ -363,51 +365,53 @@ export default Component.extend({
    * @type {Object}
    * @private
    */
-  _optionsMap: {
-    'clear': {
-      action: 'clearDate',
-      label: 'Clear'
-    },
-    'today': {
-      action: 'selectToday',
-      label: 'Today'
-    },
-    'last7Days': {
-      action: 'selectDateRange',
-      label: 'Last 7 days',
-      actionValue: [moment().startOf('day').subtract(6, 'days'), moment().startOf('day')]
-    },
-    'last30Days': {
-      action: 'selectDateRange',
-      label: 'Last 30 days',
-      actionValue: [moment().startOf('day').subtract(29, 'days'), moment().startOf('day')]
-    },
-    'lastYear': {
-      action: 'selectDateRange',
-      label: 'Last year',
-      actionValue: [moment().startOf('day').subtract(1, 'year').add(1, 'day'), moment().startOf('day')]
-    },
-    'last3Months': {
-      action: 'selectDateRange',
-      label: 'Last 3 months',
-      actionValue: [moment().startOf('day').subtract(3, 'months').add(1, 'day'), moment().startOf('day')]
-    },
-    'last6Months': {
-      action: 'selectDateRange',
-      label: 'Last 6 months',
-      actionValue: [moment().startOf('day').subtract(6, 'months').add(1, 'day'), moment().startOf('day')]
-    },
-    'thisWeek': {
-      action: 'selectDateRange',
-      label: 'This week',
-      actionValue: [moment().startOf('isoweek'), moment().startOf('day')]
-    },
-    'thisMonth': {
-      action: 'selectDateRange',
-      label: 'This month',
-      actionValue: [moment().startOf('month'), moment().startOf('day')]
+  _optionsMap: Ember.computed('moment', function() {
+    return {
+      'clear': {
+        action: 'clearDate',
+        label: 'Clear'
+      },
+      'today': {
+        action: 'selectToday',
+        label: 'Today'
+      },
+      'last7Days': {
+        action: 'selectDateRange',
+        label: 'Last 7 days',
+        actionValue: [this.get('moment').moment().startOf('day').subtract(6, 'days'), this.get('moment').moment().startOf('day')]
+      },
+      'last30Days': {
+        action: 'selectDateRange',
+        label: 'Last 30 days',
+        actionValue: [this.get('moment').moment().startOf('day').subtract(29, 'days'), this.get('moment').moment().startOf('day')]
+      },
+      'lastYear': {
+        action: 'selectDateRange',
+        label: 'Last year',
+        actionValue: [this.get('moment').moment().startOf('day').subtract(1, 'year').add(1, 'day'), this.get('moment').moment().startOf('day')]
+      },
+      'last3Months': {
+        action: 'selectDateRange',
+        label: 'Last 3 months',
+        actionValue: [this.get('moment').moment().startOf('day').subtract(3, 'months').add(1, 'day'), this.get('moment').moment().startOf('day')]
+      },
+      'last6Months': {
+        action: 'selectDateRange',
+        label: 'Last 6 months',
+        actionValue: [this.get('moment').moment().startOf('day').subtract(6, 'months').add(1, 'day'), this.get('moment').moment().startOf('day')]
+      },
+      'thisWeek': {
+        action: 'selectDateRange',
+        label: 'This week',
+        actionValue: [this.get('moment').moment().startOf('isoweek'), this.get('moment').moment().startOf('day')]
+      },
+      'thisMonth': {
+        action: 'selectDateRange',
+        label: 'This month',
+        actionValue: [this.get('moment').moment().startOf('month'), this.get('moment').moment().startOf('day')]
+      }
     }
-  },
+  }),
 
   /**
    * The default options for date pickers.
@@ -478,10 +482,10 @@ export default Component.extend({
     set(this, '_dates', val);
 
     if (val.length > 0) {
-      let month = val[0] ? val[0].clone().startOf('month') : moment().startOf('month');
+      let month = val[0] ? val[0].clone().startOf('month') : this.get('moment').moment().startOf('month');
       set(this, 'currentMonth', month);
     } else {
-      let month = moment().startOf('month');
+      let month = this.get('moment').moment().startOf('month');
       set(this, 'currentMonth', month);
     }
 
@@ -736,7 +740,7 @@ export default Component.extend({
     },
 
     selectToday() {
-      let today = moment().startOf('day');
+      let today = this.get('moment').moment().startOf('day');
       if (get(this, 'range')) {
         set(this, '_dates', array([today, today]));
       } else {

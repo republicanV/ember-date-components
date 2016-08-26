@@ -1,22 +1,65 @@
 {
-  "name": "ember-date-components",
-  "version": "0.5.1",
+  "_args": [
+    [
+      "ember-date-components@0.5.1",
+      "/Users/mihroot/www/promo/ember-app"
+    ]
+  ],
+  "_from": "ember-date-components@0.5.1",
+  "_id": "ember-date-components@0.5.1",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/ember-date-components",
+  "_nodeVersion": "4.4.0",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/ember-date-components-0.5.1.tgz_1471513998045_0.2975348993204534"
+  },
+  "_npmUser": {
+    "email": "francesconovy@gmail.com",
+    "name": "mydea"
+  },
+  "_npmVersion": "2.14.20",
+  "_phantomChildren": {
+    "babel-core": "5.8.38",
+    "broccoli-funnel": "1.0.3",
+    "broccoli-merge-trees": "1.1.2",
+    "broccoli-persistent-filter": "1.2.6",
+    "clone": "1.0.2",
+    "ember-cli-version-checker": "1.1.6",
+    "hash-for-dep": "1.0.2",
+    "json-stable-stringify": "1.0.1",
+    "resolve": "1.1.7",
+    "strip-bom": "2.0.0"
+  },
+  "_requested": {
+    "name": "ember-date-components",
+    "raw": "ember-date-components@0.5.1",
+    "rawSpec": "0.5.1",
+    "scope": null,
+    "spec": "0.5.1",
+    "type": "version"
+  },
+  "_requiredBy": [
+    "#DEV:/"
+  ],
+  "_resolved": "https://registry.npmjs.org/ember-date-components/-/ember-date-components-0.5.1.tgz",
+  "_shasum": "762a4d1751e693464211c22b864d3f2b6cd2f827",
+  "_shrinkwrap": null,
+  "_spec": "ember-date-components@0.5.1",
+  "_where": "/Users/mihroot/www/promo/ember-app",
+  "author": {
+    "email": "francesconovy@gmail.com",
+    "name": "Francesco Novy"
+  },
+  "bugs": {
+    "url": "https://github.com/mydea/ember-date-components/issues"
+  },
+  "dependencies": {
+    "ember-cli-babel": "^5.1.10",
+    "ember-cli-htmlbars": "^1.1.0"
+  },
   "description": "An Ember add-on which provides pure Ember-based date picker components.",
-  "directories": {
-    "doc": "doc",
-    "test": "tests"
-  },
-  "scripts": {
-    "build": "ember build",
-    "start": "ember server",
-    "test": "ember try:testall"
-  },
-  "repository": "https://github.com/mydea/ember-date-components",
-  "engines": {
-    "node": ">= 0.10.0"
-  },
-  "author": "Francesco Novy <francesconovy@gmail.com>",
-  "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.6",
     "ember-bootstrap": "0.9.0",
@@ -36,13 +79,30 @@
     "ember-disable-prototype-extensions": "^1.1.0",
     "ember-export-application-global": "^1.0.5",
     "ember-load-initializers": "^0.5.1",
-    "ember-moment": "6.1.0",
+    "ember-moment": "git+https://github.com/mihroot/ember-moment.git",
     "ember-page-title": "3.0.6",
     "ember-prism": "0.0.7",
     "ember-resolver": "^2.0.3",
     "ember-suave": "4.0.0",
     "loader.js": "^4.0.11"
   },
+  "directories": {
+    "doc": "doc",
+    "test": "tests"
+  },
+  "dist": {
+    "shasum": "762a4d1751e693464211c22b864d3f2b6cd2f827",
+    "tarball": "https://registry.npmjs.org/ember-date-components/-/ember-date-components-0.5.1.tgz"
+  },
+  "ember-addon": {
+    "configPath": "tests/dummy/config",
+    "demoURL": "http://mydea.github.io/ember-date-components/"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "gitHead": "6f3742d505f19035ce98a31a7cf90b8f1f291915",
+  "homepage": "https://github.com/mydea/ember-date-components#readme",
   "keywords": [
     "ember-addon",
     "date-picker",
@@ -53,12 +113,24 @@
     "date-range-picker",
     "datepicker"
   ],
-  "dependencies": {
-    "ember-cli-babel": "^5.1.10",
-    "ember-cli-htmlbars": "^1.1.0"
+  "license": "MIT",
+  "maintainers": [
+    {
+      "email": "francesconovy@gmail.com",
+      "name": "mydea"
+    }
+  ],
+  "name": "ember-date-components",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mydea/ember-date-components.git"
   },
-  "ember-addon": {
-    "configPath": "tests/dummy/config",
-    "demoURL": "http://mydea.github.io/ember-date-components/"
-  }
+  "scripts": {
+    "build": "ember build",
+    "start": "ember server",
+    "test": "ember try:testall"
+  },
+  "version": "0.5.1"
 }
