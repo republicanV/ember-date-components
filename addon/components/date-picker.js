@@ -87,7 +87,9 @@ export default Component.extend({
    * @default 'Select Date...'
    * @public
    */
-  placeholder: 'Select Date...',
+  //placeholder: 'Select Date...',
+  placeholderFrom: 'From',
+  placeholderTo: 'To',
 
   /**
    * Optional classes for the button.
@@ -211,13 +213,13 @@ export default Component.extend({
 
     if (!isRange) {
       if (!dateFrom) {
-        return get(this, 'placeholder');
+        return get(this, 'placeholderFrom');
       }
       return dateFrom.format(dateFormat);
     }
 
     if (!dateFrom) {
-      return get(this, 'placeholder');
+      return get(this, 'placeholderFrom');
     }
 
     return dateFrom.format(dateFormat);
@@ -240,7 +242,7 @@ export default Component.extend({
     let [,dateTo] = vals;
 
     if (!dateTo) {
-      return get(this, 'placeholder');
+      return get(this, 'placeholderTo');
     }
 
     return dateTo.format(dateFormat);
