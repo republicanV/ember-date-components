@@ -13,6 +13,11 @@
     {{action 'toggleOpenTo'}}>
     {{buttonToText}}
   </button>
+  {{#if isCloseVisible}}
+    <button class="m-form-control -clear" {{action 'clearDate'}}>
+      <i class="pr-close"></i>
+    </button>
+  {{/if}}
 {{/if}}
 
 {{#if isOpen}}
