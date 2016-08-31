@@ -30,6 +30,12 @@ export default Component.extend({
 
   moment: Ember.inject.service(),
 
+  /**
+   * [isCloseVisible description]
+   * @type {Boolean}
+   */
+  isCloseVisible: false,
+
   // ATTRIBUTES BEGIN ----------------------------------------
 
   /**
@@ -299,6 +305,7 @@ export default Component.extend({
     if (dateTo) {
       arr.push(dateTo);
     }
+    
     return array(arr);
   }),
 
@@ -636,13 +643,20 @@ export default Component.extend({
    */
   _setDateRange(date) {
     let isToStep = get(this, 'isToStep');
-
+    let dates = [];
+    
     if (!isToStep) {
       this._setFromDate(date);
       this._moveToToStep();
     } else {
       this._setToDate(date);
       this._close();
+    }
+    
+    dates = get(this, '_dates');
+
+    if ( dates[0] !== null && dates[1] !== null ) {
+      set(this, 'isCloseVisible', true);
     }
   },
 
@@ -739,6 +753,7 @@ export default Component.extend({
       set(this, 'isToStep', false);
       this._sendAction();
       this._close();
+      set(this, 'isCloseVisible', false);
     },
 
     selectToday() {
@@ -751,6 +766,7 @@ export default Component.extend({
 
       this._sendAction();
       this._close();
+      set(this, 'isCloseVisible', true);
     },
 
     toggleOpen() {
@@ -812,7 +828,7 @@ export default Component.extend({
       } else {
         this._setDateRange(date);
       }
-
+      
       this._sendAction();
     },
 
@@ -821,6 +837,7 @@ export default Component.extend({
 
       this._sendAction();
       this._close();
+      set(this, 'isCloseVisible', true);
     }
   }
 
