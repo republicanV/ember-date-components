@@ -15,6 +15,12 @@
   </button>
 {{/if}}
 
+{{#if isCloseVisible}}
+  <button class="date-picker__button -clear" {{action 'clearDate'}}>
+    
+  </button>
+{{/if}}
+
 {{#if isOpen}}
   <div class="date-picker{{if options ' date-picker--options'}}" style={{translateX}}>
     <div class="date-picker__calendar">
