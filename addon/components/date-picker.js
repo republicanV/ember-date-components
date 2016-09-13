@@ -30,6 +30,12 @@ export default Component.extend({
 
   moment: Ember.inject.service(),
 
+  /**
+   * [isCloseVisible description]
+   * @type {Boolean}
+   */
+  isCloseVisible: false,
+
   // ATTRIBUTES BEGIN ----------------------------------------
 
   /**
@@ -642,6 +648,7 @@ export default Component.extend({
       this._moveToToStep();
     } else {
       this._setToDate(date);
+      set(this, 'isCloseVisible', true);
       this._close();
     }
   },
@@ -738,6 +745,7 @@ export default Component.extend({
       set(this, '_dates', array());
       set(this, 'isToStep', false);
       this._sendAction();
+      set(this, 'isCloseVisible', false);
       this._close();
     },
 
