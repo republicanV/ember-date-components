@@ -88,8 +88,8 @@ export default Component.extend({
    * @public
    */
   //placeholder: 'Select Date...',
-  placeholderFrom: 'From',
-  placeholderTo: 'To',
+  placeholderFrom: '',
+  placeholderTo: '',
 
   /**
    * Optional classes for the button.
@@ -300,6 +300,20 @@ export default Component.extend({
       arr.push(dateTo);
     }
     return array(arr);
+  }),
+
+  /**
+   * [isCloseVisible description]
+   * @param  {[type]}   [description]
+   * @return {[type]}   [description]
+   */
+  isCloseVisible: computed('_dates.[]', function() {
+    let _dates = get(this, '_dates');
+    if (_dates.length && _dates[0] && _dates[1]) {
+      return true;
+    } else {
+      return false;
+    }
   }),
 
   /**
