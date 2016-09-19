@@ -8,10 +8,17 @@
 {{#if range}}
   {{dateRangeSeparator}}
   <button
+    id="asd"
     class="date-picker__button {{buttonClasses}}{{if range ' date-picker__button--range'}}{{if buttonToFocused ' date-picker__button--focus'}}"
     data-test="date-picker-toggle-button"
     {{action 'toggleOpenTo'}}>
     {{buttonToText}}
+  </button>
+{{/if}}
+
+{{#if isCloseVisible}}
+  <button class="date-picker__button -clear" {{action 'clearDate'}}>
+    <i class="pr-close"></i>
   </button>
 {{/if}}
 
