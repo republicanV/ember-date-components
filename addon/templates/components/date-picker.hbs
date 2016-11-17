@@ -1,5 +1,5 @@
 <button
-  class="date-picker__button {{buttonClasses}}{{if range ' date-picker__button--range'}}{{if buttonFocused ' date-picker__button--focus'}}"
+  class="m-btn-round -no-uppercase stats__date-picker {{buttonClasses}}{{if range ' -active'}}"
   data-test="date-picker-toggle-button"
   {{action 'toggleOpen'}}>
   {{buttonText}}
@@ -9,7 +9,7 @@
   {{dateRangeSeparator}}
   <button
     id="asd"
-    class="date-picker__button {{buttonClasses}}{{if range ' date-picker__button--range'}}{{if buttonToFocused ' date-picker__button--focus'}}"
+    class="m-btn-round -no-uppercase stats__date-picker {{buttonClasses}}{{if range ' -active'}}"
     data-test="date-picker-toggle-button"
     {{action 'toggleOpenTo'}}>
     {{buttonToText}}
