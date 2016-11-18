@@ -29,7 +29,7 @@ export default Component.extend({
   classNameBindings: ['isOpen:date-picker__wrapper--open'],
 
   moment: Ember.inject.service(),
-  i18n: Ember.inject.service(),
+  //i18n: Ember.inject.service(),
 
   // ATTRIBUTES BEGIN ----------------------------------------
 
@@ -89,13 +89,15 @@ export default Component.extend({
    * @public
    */
   //placeholder: 'Select Date...',
-  placeholderFrom: computed('i18n', function() {
-    return this.get('i18n').t('stats.TXT_FROM');
-  }),
-  placeholderTo: computed('i18n', function() {
-    return this.get('i18n').t('stats.TXT_TO');
-  }),
-
+//   placeholderFrom: computed('i18n', function() {
+//     return this.get('i18n').t('stats.TXT_FROM');
+//   }),
+//   placeholderTo: computed('i18n', function() {
+//     return this.get('i18n').t('stats.TXT_TO');
+//   }),
+    placeholderFrom: 'From',
+    placeholderTo: 'To',
+  
   /**
    * Optional classes for the button.
    *
