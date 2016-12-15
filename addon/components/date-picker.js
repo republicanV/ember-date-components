@@ -130,6 +130,15 @@ export default Component.extend({
    * @public
    */
   options: false,
+  
+  /**
+   * Default values for option buttons
+   */
+  btnOptionClear: 'Clear',
+  btnOptionToday: 'Today',
+  btnOption7Days: '7 days',
+  btnOption30Days: '30 days',
+  btnOption3Months: '3 months',
 
   /**
    * The action to call whenever one of the value changes.
