@@ -29,7 +29,7 @@ export default Component.extend({
   classNameBindings: ['isOpen:date-picker__wrapper--open'],
 
   moment: Ember.inject.service(),
-  //i18n: Ember.inject.service(),
+  i18n: Ember.inject.service(),
 
   // ATTRIBUTES BEGIN ----------------------------------------
 
@@ -392,20 +392,20 @@ export default Component.extend({
     return {
       'clear': {
         action: 'clearDate',
-        label: 'Clear'
+        label: this.get('i18n').t('stats.TXT_OPTION_CLEAR')
       },
       'today': {
         action: 'selectToday',
-        label: 'Today'
+        label: this.get('i18n').t('stats.TXT_OPTION_TODAY')
       },
       'last7Days': {
         action: 'selectDateRange',
-        label: 'Last 7 days',
+        label: this.get('i18n').t('stats.TXT_OPTION_7DAYS'),
         actionValue: [this.get('moment').moment().startOf('day').subtract(6, 'days'), this.get('moment').moment().startOf('day')]
       },
       'last30Days': {
         action: 'selectDateRange',
-        label: 'Last 30 days',
+        label: this.get('i18n').t('stats.TXT_OPTION_30DAYS'),
         actionValue: [this.get('moment').moment().startOf('day').subtract(29, 'days'), this.get('moment').moment().startOf('day')]
       },
       'lastYear': {
@@ -415,7 +415,7 @@ export default Component.extend({
       },
       'last3Months': {
         action: 'selectDateRange',
-        label: 'Last 3 months',
+        label: this.get('i18n').t('stats.TXT_OPTION_3MONTHS'),
         actionValue: [this.get('moment').moment().startOf('day').subtract(3, 'months').add(1, 'day'), this.get('moment').moment().startOf('day')]
       },
       'last6Months': {
